@@ -1,0 +1,9 @@
+---
+- name: test list lvm info
+  hosts: node1
+  remote_user: root
+  become: yes
+
+  tasks:
+          - debug:
+                  msg: "{{ ansible_lvm.vgs.research.free_g }}"

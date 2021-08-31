@@ -1,0 +1,34 @@
+---
+- name: create lvol
+  hosts: localhost
+  remote_user: curtis
+  become: yes
+
+  tasks:
+          - fail:
+                  msg: "VG not found"
+            when: ansible_lvm.vgs.research is not defined 
+
+            # stopped if research vg not exist. further expect it to exist
+
+          - lvol:
+                  lv: data
+                  vg: research
+                  size: 1500m
+            when: ansible_lvm.vgs.research.free_g > '1.50'
+
+          - fail:
+                  msg: "LV Can not be created with following size"
+            when: ansible_lvm.vgs.research.free_g > '1.50'
+            ignore_errors: yes
+
+
+          - lvol:
+                  lv: data
+                  vg: research
+                  size: 800M
+
+          - filesystem:
+                  dev: /dev/research/data
+                  fstype: ext4
+

@@ -1,0 +1,16 @@
+---
+- name: create users with passwd from vault
+  hosts: localhost
+  remote_user: curtis
+  become: yes
+  vars_files: secret.yaml
+
+  tasks:
+          - user:
+                  name: devuser
+                  password: "{{ pw_dev | password_hash('sha512') }}"
+
+          - user:
+                  name: opsuser
+                  password: "{{ pw_ops | password_hash('sha512') }}"
+

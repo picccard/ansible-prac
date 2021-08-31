@@ -1,0 +1,12 @@
+---
+- name: Start and Stop services
+  hosts: servers
+  tasks:
+    - name: "service postgresql"
+      service: name=postgresql state=started
+      when: ansible_host == "node4.picccard.local"
+
+    - name: "service ssdh"
+      service: name=sshd state=started
+      when: ansible_host == "node2.picccard.local"
+...

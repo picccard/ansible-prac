@@ -1,0 +1,14 @@
+---
+- name: Install multiple packages
+  hosts: node2
+  tasks:
+    - name: Install packages
+      become: yes
+      yum:
+        name:
+          - 'make'
+          - 'gcc'
+          - 'httpd'
+          - 'wget'
+        state: latest
+...

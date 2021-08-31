@@ -1,0 +1,9 @@
+---
+- name: Install samba and configure a fileshare
+  hosts: control
+  remote_user: user
+  become: yes # e.g. yum requires privilege escalation
+  
+  roles:
+      - samba-role
+...

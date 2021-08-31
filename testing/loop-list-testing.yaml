@@ -1,0 +1,27 @@
+---
+- name: Testing dict2items
+  hosts: localhost
+  vars:
+          testdata:
+            - prop1: item1prop1
+              prop2: item1prop2
+              prop3: item1prop3
+              prop4: item1prop4
+            - prop1: item2prop1
+              prop2: item2prop2
+              prop3: item2prop3
+              prop4: item2prop4               
+            - prop1: item3prop1
+              prop2: item3prop2
+              prop3: item3prop3
+              prop4: item3prop4
+
+  tasks:
+          - name: Print data
+            debug:
+                    msg:
+                            - "access prop1 {{ item.prop1 }}"
+                            - "access prop2 {{ item.prop2 }}"
+                            - "access prop3 {{ item.prop3 }}"
+                            - "access prop4 {{ item.prop4 }}"
+            loop: "{{ testdata }}"

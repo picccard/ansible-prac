@@ -1,0 +1,7 @@
+- name: Backup original samba config (once)
+  copy:
+          src: /etc/samba/smb.conf
+          dest: /etc/samba/smb.conf.backup
+          force: no
+  notify: "Remove orginal config"
+

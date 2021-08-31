@@ -1,0 +1,8 @@
+---
+# tasks file for /playbooks/roles/samba
+
+- import_tasks: install-samba.yaml
+- import_tasks: backup-config.yaml
+- import_tasks: create-user-share-owner.yaml
+- import_tasks: manage-shares.yaml
+- import_tasks: firewall.yaml

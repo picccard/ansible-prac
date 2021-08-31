@@ -1,0 +1,9 @@
+---
+# defaults file for /playbooks/roles/samba
+share_owner_account: "user"
+public_shares:
+        # shows of two diff ways to create an object
+        - { name: winshare, path: "/playbooks" }
+        
+        - name: random
+          path: "/random"

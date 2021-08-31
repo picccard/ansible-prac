@@ -1,0 +1,25 @@
+---
+- name: Add custom yum repos
+  hosts: node1
+  remote_user: user
+  become: yes
+
+  tasks:
+          - name: Add BaseOS repo
+            yum_repository:
+                    name: customYumBaseOS
+                    description: custom YumBaseOS
+                    #file: allInSameFile
+                    baseurl: "http://repo/BaseOS"
+                    gpgcheck: no
+                    enabled: yes
+
+          - name: Add Apps repo
+            yum_repository:
+                    name: customYumApps
+                    description: customApps
+                    #file: allInSameFile
+                    baseurl: "http://repo/Apps"
+                    gpgcheck: no
+                    enabled: yes
+...

@@ -1,0 +1,6 @@
+---
+# tasks file for database-role
+- name: "Copy file to db user's home dir"
+  copy:
+          src: password.txt
+          dest: /home/dba/

@@ -1,0 +1,13 @@
+---
+# handlers file for /playbooks/roles/samba
+
+- name: Remove orginal config
+  file:
+          path: /etc/samba/smb.conf
+          state: absent
+
+- name: Restart samba service
+  service:
+          name: smb
+          enabled: yes
+          state: restarted

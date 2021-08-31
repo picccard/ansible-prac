@@ -1,0 +1,25 @@
+- name: Create folder to share
+  file:
+          path: "{{ item.path }}"
+          state: directory
+          recurse: yes # chown -R {{ share_owner_account }} /path/to/share
+          owner: "{{ share_owner_account }}"
+          group: "{{ share_owner_account }}"
+  loop: "{{ public_shares }}"
+
+- name: Add shares in new config
+  blockinfile:
+          dest: /etc/samba/smb.conf
+          create: yes
+          block: |
+                  [{{ item.name }}]
+                  path = {{ item.path }}
+                  writeable = yes
+                  browseable = yes
+                  public = yes
+                  create mask = 0644
+                  directory mask = 0755
+                  force user = {{ share_owner_account }}
+          marker: "#{mark} Ansible block. {{ item.name }}"
+  loop: "{{ public_shares }}"
+  notify: "Restart samba service"

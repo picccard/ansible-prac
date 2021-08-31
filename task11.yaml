@@ -1,0 +1,8 @@
+---
+- name: "Deploy database-role"
+  hosts: node1
+  remote_user: user
+  become: yes
+
+  roles:
+          - database-role

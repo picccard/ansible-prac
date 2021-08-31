@@ -1,0 +1,79 @@
+---
+- name: Install samba and configure a fileshare
+  hosts: control
+  remote_user: user
+  become: yes # e.g. yum requires privilege escalation
+  vars:
+          share_owner_account: "user"
+          public_shares:
+                  # shows of two diff ways to create an object
+                  - { name: winshare, path: "/playbooks" }
+                  
+                  - name: random
+                    path: "/random"
+
+  tasks:
+          - name: Install SAMBA
+            yum:
+                    name: samba
+                    state: latest
+
+          - name: Backup original samba config (once)
+            copy:
+                    src: /etc/samba/smb.conf
+                    dest: /etc/samba/smb.conf.backup
+                    force: no
+            register: backup_smb_conf
+
+          - name: Remove orginal config
+            file:
+                    path: /etc/samba/smb.conf
+                    state: absent
+            when: backup_smb_conf.changed
+
+          - name: User to own the share
+            user:
+                    name: "{{ share_owner_account }}"
+                    state: present
+                    shell: /bin/bash # /sbin/nologin
+
+          - name: Create folder to share
+            file:
+                    path: "{{ item.path }}"
+                    state: directory
+                    recurse: yes # chown -R {{ share_owner_account }} /path/to/share
+                    owner: "{{ share_owner_account }}"
+                    group: "{{ share_owner_account }}"
+            loop: "{{ public_shares }}"
+
+          - name: Add shares in new config
+            blockinfile:
+                    dest: /etc/samba/smb.conf
+                    create: yes
+                    block: |
+                            [{{ item.name }}]
+                            path = {{ item.path }}
+                            writeable = yes
+                            browseable = yes
+                            public = yes
+                            create mask = 0644
+                            directory mask = 0755
+                            force user = {{ share_owner_account }}
+                    marker: "#{mark} Ansible block. {{ item.name }}"
+            loop: "{{ public_shares }}"
+            register: smb_conf_file
+
+          - name: Restart samba service and start at boot
+            service:
+                    name: smb
+                    enabled: yes
+                    state: restarted
+            when: smb_conf_file.changed
+
+          - name: Open firewalld
+            firewalld:
+                    permanent: yes
+                    immediate: yes
+                    service: samba
+                    state: enabled
+...

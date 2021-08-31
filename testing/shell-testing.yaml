@@ -1,0 +1,12 @@
+---
+- name: Shell Testing. Run with -k to supply ssh pwd and -K to supply pwd for escalated privileges.
+  hosts: node1
+  remote_user: user
+  become: yes
+
+  tasks:
+    - shell: whoami
+      register: whoami
+
+    - debug: var=whoami.stdout
+...

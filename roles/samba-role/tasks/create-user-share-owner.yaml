@@ -1,0 +1,5 @@
+- name: User to own the share
+  user:
+          name: "{{ share_owner_account }}"
+          state: present
+          shell: /bin/bash # /sbin/nologin

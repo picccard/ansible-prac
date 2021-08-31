@@ -1,0 +1,28 @@
+---
+# tasks file for web-role
+#
+# ansible_all_ipv4_addresses ansible_hostname
+
+- name: install httpd
+  yum:
+          name: httpd
+          state: present
+
+- name: conf httpd service
+  service:
+          name: httpd
+          enabled: yes
+          state: started
+
+- name: open firewall
+  firewalld:
+          service: http
+          state: enabled
+          permanent: yes
+          immediate: yes
+
+- name: deploy index.html 
+  copy:
+          dest: /var/www/html/index.html
+          content: 'hostname is {{ ansible_hostname }} and ip are {{ ansible_all_ipv4_addresses | join(",") }}'
+

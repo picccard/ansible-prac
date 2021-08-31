@@ -1,0 +1,6 @@
+- name: Open firewalld
+  firewalld:
+          permanent: yes
+          immediate: yes
+          service: samba
+          state: enabled

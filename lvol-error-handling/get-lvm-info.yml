@@ -1,7 +1,7 @@
 ---
 - name: test list lvm info
   hosts: node1
-  remote_user: root
+  remote_user: curtis
   become: yes
 
   tasks:

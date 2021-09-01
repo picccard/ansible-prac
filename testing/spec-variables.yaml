@@ -1,0 +1,15 @@
+---
+- name: testing special variables
+  hosts: all:localhost
+  remote_user: curtis
+  
+  tasks:
+          - debug:
+                  msg: "{{ hostvars.node1 }}"
+            when: ansible_hostname == 'master'
+
+                  #          - template:
+                  #                  src: /home/curtis/template.j2
+                  #                  dest: /home/curtis/template.hosts
+
+                  

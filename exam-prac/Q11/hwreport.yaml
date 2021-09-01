@@ -1,0 +1,42 @@
+---
+- hosts: all
+  remote_user: admin
+  become: yes
+
+  tasks:
+    - name: Create file
+      get_url:
+        src: 'http://192.168.10.254/ex407/hwreport.empty'
+        dest: '/root/hwreport.txt'
+
+    - name: Update hostname
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Inventory host name'
+        line: 'Inventory host name = {{ ansible_hostname }}'
+
+    - name: Update total memory
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Total memory in MB'
+        line: 'Total memory in MB = {{ ansible_memtotal_mb }}'
+
+    - name: Update BIOS version
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^BIOS version'
+        line: 'BIOS version = {{ ansible_bios_version }}'
+
+    - name: Update size of disk vda
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Size of disk device vda'
+        line: 'Size of disk device vda = {{ ansible_devices.vda.size | default('NONE') }}'
+
+    - name: Update size of disk vdb
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Size of disk device vdb'
+        line: 'Size of disk device vdb = {{ ansible_devices.vdb.size | default('NONE') }}'
+
+...

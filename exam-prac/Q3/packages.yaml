@@ -1,0 +1,26 @@
+---
+- name: Playbook for question 3
+  hosts: dev:balancers:prod
+
+  tasks:
+    - name: Install php and mariadb
+      yum:
+        name: {{ item }}
+        state: latest
+      loop:
+        - php
+        - mariadb
+    
+    - name: Install the Development Tools package
+      yum:
+        name: "@development-tools"
+        state: latest
+      when: "'dev' in {{ group_names }}"
+
+
+    - name: Update all paclages to latest version
+      yum:
+        name: '*'
+        state: latest
+      when: "'dev' in {{ group_names }}"
+...

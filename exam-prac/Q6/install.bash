@@ -1,0 +1,1 @@
+ansible-galaxy install -r install.yml --roles-path /home/admin/ansible/roles

@@ -1,0 +1,6 @@
+---
+  - name: Set apache role
+    hosts: webservers
+    roles:
+      - apache-role
+...

@@ -1,0 +1,12 @@
+---
+- name: create hosts file
+  hosts: all
+  remote_user: curtis
+  become: yes
+
+  tasks:
+          #- debug:
+          #        msg: " {{ hostvars.node1.ansible_default_ipv4.address }}"
+          - template:
+                  src: hosts.j2
+                  dest: /root/hosts-ansible

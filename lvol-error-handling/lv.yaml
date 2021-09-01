@@ -1,6 +1,6 @@
 ---
 - name: create lvol
-  hosts: localhost
+  hosts: node1 # localhost
   remote_user: curtis
   become: yes
 
@@ -19,7 +19,7 @@
 
           - fail:
                   msg: "LV Can not be created with following size"
-            when: ansible_lvm.vgs.research.free_g > '1.50'
+            when: ansible_lvm.vgs.research.free_g < '1.50'
             ignore_errors: yes
 
 
@@ -27,6 +27,7 @@
                   lv: data
                   vg: research
                   size: 800M
+            when: ansible_lvm.vgs.research.free_g < '1.50'
 
           - filesystem:
                   dev: /dev/research/data

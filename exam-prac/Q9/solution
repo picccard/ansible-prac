@@ -1,0 +1,2 @@
+cp password.txt /home/admin/ansible/password.txt
+ansible-vault encrypt vault.yaml --vault-id label@/home/admin/ansible/password.txt

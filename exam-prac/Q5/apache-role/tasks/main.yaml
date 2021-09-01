@@ -1,0 +1,26 @@
+---
+- name: Install apache
+  yum:
+    name: httpd
+    state: latest
+
+- name: Start apache & firewalld and configure to start on boot
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - httpd
+    - firewalld
+
+- name: Open firewall for http and https
+  firewalld:
+    permanent: yes
+    immediate: yes
+    service: "{{ item }}"
+    state: enabled
+  loop:
+    - http
+    - https
+    
+...

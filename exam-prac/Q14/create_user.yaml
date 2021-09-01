@@ -1,0 +1,24 @@
+---
+- hosts: "dev:balancers:prod"
+  remote_user: admin
+  become: yes
+  vars_files: 
+    - vault.yaml
+    - user_list.yaml
+
+  tasks:
+    - user:
+        name: '{{ item.name }}'
+        description: '{{ item.desc }}'
+        password: '{{ dev_pass | password_hash('sha512') }}'
+        groups: devops
+      loop: {{ users }}
+      when: item.desc is developer and (inventory_hostname in groups['dev'] or inventory_hostname in groups['balancers'])
+
+    - user:
+        name: '{{ item.name }}'
+        description: '{{ item.desc }}'
+        groups: opsmgr
+        password: '{{ mgr_pass | password_hash('sha512') }}'
+      loop: {{ users }}
+      when: item.desc is developer and (inventory_hostname in groups['prod'])

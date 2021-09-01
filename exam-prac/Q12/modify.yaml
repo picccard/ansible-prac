@@ -1,0 +1,19 @@
+---
+  - hosts: all
+    remote_user: admin
+    become: yes
+    tasks:
+      - copy:
+          dest: /etc/issue
+          content: "Development"
+        when: inventory_hostname in groups['dev']
+
+      - copy:
+          dest: /etc/issue
+          content: "Test"
+        when: inventory_hostname in groups['test']
+
+      - copy:
+          dest: /etc/issue
+          content: "Production"
+        when: inventory_hostname in groups['prod']

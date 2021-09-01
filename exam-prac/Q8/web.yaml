@@ -1,0 +1,33 @@
+---
+- name: Handle some files
+  hosts: dev
+
+  tasks: 
+    - name: Directory /webdev
+      file:
+        path: /webdev
+        owner: apache
+        group: apache
+        mode: "2775"
+        state: directory
+  
+    - name: Symlink into /webdev
+      file:
+        dest: /webdev
+        src: /var/www/html/webdev
+        state: link
+
+    - name: Add content to /webdev/index.html
+      copy:
+        dest: /webdev/index.html
+        content: "Development"
+        setype: httpd_sys_content_t
+        group: apache
+        owner: apache
+
+    #- name: Add content to /webdev/index.html
+    #  lineinfile:
+    #    path: /webdev/index.html
+    #    regexp: "^Development"
+    #    line: "Development"
+...

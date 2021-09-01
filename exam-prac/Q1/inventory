@@ -1,0 +1,16 @@
+# ansible-inventory -i test.yml --list
+
+[dev]
+node1.example.com
+
+[prod]
+node4.example.com
+node5.example.com
+
+
+[balancers]
+node2.example.com
+node3.example.com
+
+[webservers:children]
+prod
